@@ -1,0 +1,40 @@
+# テストを実行する
+name: Run tests
+on: workflow_call
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+
+      - run: npm ci
+
+      - name: Check format by Prettier
+        run: npx prettier . --check
+
+      - name: Check by ESLint
+        run: npx eslint .
+
+      - name: Run tests
+        run: npm test
+
+      # 注意: 開発が進むとlib/constructに新しいtsファイルを追加することがある
+      # この場合は、lib/construct/*/*.tsを下記に追加すると良い
+      - name: Check docs
+        run: |
+          npx typedoc --validation --treatWarningsAsErrors --treatValidationWarningsAsErrors \
+          lib/*.ts bin/*.ts
+
+      - name: Synthesize the CDK stack
+        run: npx cdk synth

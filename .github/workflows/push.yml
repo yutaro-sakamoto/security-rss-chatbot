@@ -1,0 +1,29 @@
+# mainブランチ以外へのPush時に走る処理
+name: push
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # 最初にworkflowファイル全体をチェックする
+  check-workflows:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/check-workflows.yml
+
+  # workflowファイル全体のチェックが終わったら、テストを実行する
+  test:
+    needs: check-workflows
+    permissions:
+      contents: read
+    secrets: inherit
+    uses: ./.github/workflows/test.yml
