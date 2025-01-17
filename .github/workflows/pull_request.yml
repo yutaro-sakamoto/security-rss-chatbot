@@ -40,16 +40,16 @@ jobs:
   #  uses: ./.github/workflows/post-cdk-diff.yml
 
   # テストが完了したら、dependabotが作成したPull Requestを自動マージする
-  #auto-merge-dependabot-pr:
-  #  needs:
-  #    - test
-  #  if: github.actor == 'dependabot[bot]'
-  #  runs-on: ubuntu-latest
-  #  permissions:
-  #    contents: write
-  #    pull-requests: write
-  #  steps:
-  #    - uses: actions/checkout@v4
-  #    - run: gh pr merge "${GITHUB_HEAD_REF}" --squash --auto
-  #      env:
-  #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  auto-merge-dependabot-pr:
+    needs:
+      - test
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: gh pr merge "${GITHUB_HEAD_REF}" --squash --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
