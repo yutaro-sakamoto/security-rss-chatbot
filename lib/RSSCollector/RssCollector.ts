@@ -6,6 +6,12 @@ import { Duration } from "aws-cdk-lib";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
 
+/**
+ * A stack includes the following resources
+ * * Lambda function that collects RSS data
+ * * S3 bucket to store RSS data
+ * * EventBridge rule to trigger the Lambda function every hour
+ */
 export class RssCollector extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
