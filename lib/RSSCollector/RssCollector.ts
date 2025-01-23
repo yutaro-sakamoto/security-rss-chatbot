@@ -1,10 +1,20 @@
 import { Construct } from "constructs";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as s3 from "aws-cdk-lib/aws-s3";
-import { Duration } from "aws-cdk-lib";
 import * as events from "aws-cdk-lib/aws-events";
+import { Duration } from "aws-cdk-lib";
 import * as targets from "aws-cdk-lib/aws-events-targets";
+import * as s3 from "aws-cdk-lib/aws-s3";
+
+/**
+ * Properties for RssCollector
+ */
+export interface RssCollectorProps {
+  /**
+   * The S3 bucket to store RSS data
+   */
+  readonly bucket: s3.Bucket;
+}
 
 /**
  * A stack includes the following resources
@@ -13,22 +23,17 @@ import * as targets from "aws-cdk-lib/aws-events-targets";
  * * EventBridge rule to trigger the Lambda function every hour
  */
 export class RssCollector extends Construct {
-  constructor(scope: Construct, id: string) {
+  constructor(scope: Construct, id: string, props: RssCollectorProps) {
     super(scope, id);
-
-    const bucket = new s3.Bucket(this, "RssDataBucket", {
-      lifecycleRules: [{ expiration: Duration.days(30) }],
-      enforceSSL: true,
-    });
 
     const rssCollectorFn = new NodejsFunction(this, "function", {
       runtime: lambda.Runtime.NODEJS_22_X,
       environment: {
-        BUCKET_NAME: bucket.bucketName,
+        BUCKET_NAME: props.bucket.bucketName,
       },
     });
 
-    bucket.grantPut(rssCollectorFn);
+    props.bucket.grantPut(rssCollectorFn);
 
     new events.Rule(this, "RssCollectorSchedule", {
       schedule: events.Schedule.rate(Duration.minutes(60)),
