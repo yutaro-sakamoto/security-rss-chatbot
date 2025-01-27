@@ -22,21 +22,14 @@ export interface BedRockProps {
 export class BedRock extends Construct {
   constructor(scope: Construct, id: string, props: BedRockProps) {
     super(scope, id);
+
     const kb = new bedrock.KnowledgeBase(this, "KnowledgeBase", {
       embeddingsModel: bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
-      instruction:
-        "Use this knowledge base to answer questions about books. " +
-        "It contains the full text of novels.",
     });
 
     new bedrock.S3DataSource(this, "DataSource", {
       bucket: props.bucket,
       knowledgeBase: kb,
-      dataSourceName: "books",
-      chunkingStrategy: bedrock.ChunkingStrategy.fixedSize({
-        maxTokens: 500,
-        overlapPercentage: 20,
-      }),
     });
   }
 }
