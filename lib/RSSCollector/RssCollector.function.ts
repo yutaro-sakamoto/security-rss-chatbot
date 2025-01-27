@@ -12,9 +12,9 @@ export const handler = async () => {
     await s3
       .putObject({
         Bucket: BUCKET_NAME,
-        Key: `rss-${Date.now()}.xml`,
+        Key: `rss-${Date.now()}.txt`,
         Body: rssText,
-        ContentType: "application/rss+xml",
+        ContentType: "text/plain",
       })
       .promise();
     return { statusCode: 200, body: "Success" };
