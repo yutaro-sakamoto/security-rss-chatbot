@@ -13,7 +13,7 @@ export class SecurityRssChatbotStack extends cdk.Stack {
     super(scope, id, props);
 
     const bucket = new s3.Bucket(this, "RssDataBucket", {
-      lifecycleRules: [{ expiration: Duration.days(30) }],
+      lifecycleRules: [{ expiration: Duration.days(1) }],
       enforceSSL: true,
     });
     new RssCollector(this, "RssCollector", { bucket });
