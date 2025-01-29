@@ -18,6 +18,9 @@ export const handler = async () => {
     const links = items.map((i: any) => i.link).filter((l: string) => l);
 
     for (const link of links) {
+      // Sleep for 500ms to avoid being rate limited
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       // Determine file name
       const lastSlashIndex = link.lastIndexOf("/");
       if (lastSlashIndex === -1 || lastSlashIndex >= link.length - 1) {
