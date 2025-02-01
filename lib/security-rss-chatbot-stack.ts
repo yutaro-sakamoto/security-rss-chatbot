@@ -18,7 +18,7 @@ export class SecurityRssChatbotStack extends cdk.Stack {
       enforceSSL: true,
     });
     new RssCollector(this, "RssCollector", { bucket });
-    new BedRock(this, "BedRock", { bucket });
+    new BedRock(this, "BedRock");
     new SlackBot(this, "SlackBot");
   }
 }

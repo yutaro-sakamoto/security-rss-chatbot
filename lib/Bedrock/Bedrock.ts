@@ -1,7 +1,14 @@
 import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
-//import * as bedrock from "aws-cdk-lib/aws-bedrock";
-import { bedrock } from "@cdklabs/generative-ai-cdk-constructs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import {
+  DatabaseCluster,
+  DatabaseClusterEngine,
+  AuroraPostgresEngineVersion,
+} from "aws-cdk-lib/aws-rds";
+import * as rds from "aws-cdk-lib/aws-rds";
+//import { Credentials } from "aws-cdk-lib/aws-rds";
+//import { bedrock, amazonaurora } from "@cdklabs/generative-ai-cdk-constructs";
 
 /**
  * Properties for RssCollector
@@ -20,16 +27,21 @@ export interface BedRockProps {
  * * EventBridge rule to trigger the Lambda function every hour
  */
 export class BedRock extends Construct {
-  constructor(scope: Construct, id: string, props: BedRockProps) {
+  constructor(scope: Construct, id: string) {
     super(scope, id);
-
-    const kb = new bedrock.KnowledgeBase(this, "KnowledgeBase", {
-      embeddingsModel: bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
+    const vpc = new ec2.Vpc(this, "VPC");
+    new DatabaseCluster(this, "AuroraCluster", {
+      engine: DatabaseClusterEngine.auroraPostgres({
+        version: AuroraPostgresEngineVersion.VER_16_6,
+      }),
+      writer: rds.ClusterInstance.serverlessV2("Writer"),
+      serverlessV2MinCapacity: 0,
+      serverlessV2MaxCapacity: 4,
+      vpc,
     });
 
-    new bedrock.S3DataSource(this, "DataSource", {
-      bucket: props.bucket,
-      knowledgeBase: kb,
-    });
+    //const auroraVectorStore = amazonaurora.AmazonAuroraVectorStore.fromExistingAuroraVectorStore(this, "AuroraVectorStore", {
+
+    //});
   }
 }
