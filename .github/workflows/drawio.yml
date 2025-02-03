@@ -1,0 +1,22 @@
+name: Run drawio test
+on: workflow_call
+
+permissions:
+  contents: read
+
+env:
+  DRAW_IO_VERSION: "26.0.9"
+jobs:
+  verify-images:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: download installer
+        run: |
+          curl -L -o drawio-installer.exe https://github.com/jgraph/drawio-desktop/releases/download/v${{ env.DRAW_IO_VERSION }}/draw.io-${{ env.DRAW_IO_VERSION }}-windows-installer.exe
+
+      - name: Install Software
+        run: |
+          Start-Process -FilePath "drawio-installer.exe" -ArgumentList "/S" -Wait
+        shell: powershell

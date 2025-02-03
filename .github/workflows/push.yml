@@ -27,3 +27,10 @@ jobs:
       contents: read
     secrets: inherit
     uses: ./.github/workflows/test.yml
+
+  drawio:
+    needs: check-workflows
+    permissions:
+      contents: read
+    secrets: inherit
+    uses: ./.github/workflows/drawio.yml
