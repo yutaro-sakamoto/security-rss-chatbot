@@ -20,3 +20,8 @@ jobs:
         run: |
           Start-Process -FilePath "drawio-installer.exe" -ArgumentList "/S" -Wait
         shell: powershell
+
+      - name: Run drawio
+        run: |
+          Start-Process -FilePath "C:\Program Files\draw.io\draw.io.exe" -ArgumentList "-xf","png","-o","security-info-chatbot.png","security-info-chatbot.drawio" -Wait
+        shell: powershell

@@ -15,7 +15,9 @@ export const handler = async () => {
     const rssJson = parser.parse(rssText);
 
     const items = rssJson["rdf:RDF"]?.item ?? [];
-    const links = items.map((i: any) => i.link).filter((l: string) => l);
+    const links = items
+      .map((i: { link: string }) => i.link)
+      .filter((l: string) => l);
 
     for (const link of links) {
       // Sleep for 500ms to avoid being rate limited
