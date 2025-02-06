@@ -12,7 +12,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: download installer
+
+      - name: Cache draw.io installer
+        id: cache-drawio
+        uses: actions/cache@v2
+        with:
+          path: drawio-installer.exe
+          key: drawio-${{ env.DRAW_IO_VERSION }}
+          restore-keys: |
+            drawio-
+
+      - name: Download installer if not cached
+        if: steps.cache-drawio.outputs.cache-hit != 'true'
         run: |
           curl -L -o drawio-installer.exe https://github.com/jgraph/drawio-desktop/releases/download/v${{ env.DRAW_IO_VERSION }}/draw.io-${{ env.DRAW_IO_VERSION }}-windows-installer.exe
 
