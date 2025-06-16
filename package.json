@@ -15,7 +15,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.15.30",
-    "aws-cdk": "^2.1018.0",
+    "aws-cdk": "^2.1018.1",
     "cdk-nag": "^2.36.13",
     "eslint": "^9.29.0",
     "globals": "^16.2.0",
