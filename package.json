@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@cdklabs/generative-ai-cdk-constructs": "^0.1.311",
-    "aws-cdk-lib": "2.219.0",
+    "aws-cdk-lib": "2.220.0",
     "aws-sdk": "^2.1692.0",
     "constructs": "^10.0.0",
     "fast-xml-parser": "^5.3.0",
