@@ -25,7 +25,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Run `cdk diff`
         run: |
