@@ -34,7 +34,7 @@ jobs:
           npx cdk diff >> cdk-diff-result.txt
 
       - name: Post a comment
-        uses: actions/github-script@v8.0.0
+        uses: actions/github-script@v9.0.0
         with:
           script: |
             const fs = require('fs')
